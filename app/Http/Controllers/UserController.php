@@ -111,7 +111,13 @@ class UserController extends Controller
 
     private function syncAccess(User $user, array $data): void
     {
-        $user->syncRoles($data['roles'] ?? []);
-        $user->syncPermissions($data['permissions'] ?? []);
+        // El formulario envía IDs. Laravel Permission sincroniza roles y
+        // permisos por nombre cuando se reciben valores simples, por eso se
+        // obtienen los modelos antes de asignarlos.
+        $roles = Role::query()->whereIn('id', $data['roles'] ?? [])->get();
+        $permissions = Permission::query()->whereIn('id', $data['permissions'] ?? [])->get();
+
+        $user->syncRoles($roles);
+        $user->syncPermissions($permissions);
     }
 }
