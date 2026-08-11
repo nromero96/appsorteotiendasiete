@@ -6,8 +6,8 @@ use App\Models\Ticket;
 
 class TicketShareController extends Controller
 {
-    private const FONT = 'C:\\Windows\\Fonts\\arial.ttf';
-    private const FONT_BOLD = 'C:\\Windows\\Fonts\\arialbd.ttf';
+    private const FONT = 'fonts/IBMPlexSans-Regular.ttf';
+    private const FONT_BOLD = 'fonts/IBMPlexSans-SemiBold.ttf';
 
     public function image(Ticket $ticket)
     {
@@ -91,7 +91,13 @@ class TicketShareController extends Controller
 
     private function text($image, string $text, int $size, int $x, int $y, int $color, bool $bold = false): void
     {
-        imagettftext($image, $size, 0, $x, $y, $color, $bold ? self::FONT_BOLD : self::FONT, $text);
+        $font = resource_path($bold ? self::FONT_BOLD : self::FONT);
+
+        if (! is_readable($font)) {
+            throw new \RuntimeException('No se encontró la fuente necesaria para generar la imagen del ticket.');
+        }
+
+        imagettftext($image, $size, 0, $x, $y, $color, $font, $text);
     }
 
     private function shorten(string $value, int $length): string
