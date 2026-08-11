@@ -19,7 +19,7 @@
     <main class="relative mx-auto max-w-6xl px-5 py-6 sm:px-8 sm:py-10">
         <nav class="flex items-center justify-between gap-4">
             <a href="{{ route('public.next-draw') }}"><img src="{{ asset('brand/perfil-log-blanco.png') }}" alt="Tienda Siete Market & Licorería" class="tienda-siete-wordmark h-10 sm:h-12"></a>
-            <div class="flex items-center gap-2"><a href="{{ route('public.ticket-verification') }}" class="rounded-lg border border-cyan-400/40 px-3 py-2 text-xs font-bold text-cyan-200 transition hover:bg-cyan-400/10">Verificar tickets</a><a href="{{ route('login') }}" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-cyan-400 hover:text-white">Administración</a></div>
+            <a href="{{ route('public.ticket-verification') }}" class="rounded-lg border border-cyan-400/40 px-3 py-2 text-xs font-bold text-cyan-200 transition hover:bg-cyan-400/10">Verificar tickets</a>
         </nav>
 
         @if(session('error'))
