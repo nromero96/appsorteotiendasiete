@@ -45,10 +45,11 @@
                         <p class="mt-4 text-xs font-bold uppercase tracking-wider text-slate-500">DNI</p>
                         <p class="mt-2 font-mono font-bold text-slate-200">{{ $ticket->customer?->document_number ?? 'No disponible' }}</p>
                     </div>
-                    <div class="space-y-4 rounded-xl border border-slate-800 bg-slate-950/60 p-5">
-                        <div><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Sorteo</p><p class="mt-1 font-bold text-slate-100">{{ $ticket->draw?->title ?? 'No disponible' }}</p></div>
-                        <div><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Premio</p><p class="mt-1 font-bold text-cyan-200">{{ $ticket->prize?->name ?? 'No disponible' }}</p></div>
-                        <div class="grid grid-cols-2 gap-4"><div><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Tipo</p><p class="mt-1 font-semibold capitalize text-slate-200">{{ $ticket->purchase_type }}</p></div><div><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Monto</p><p class="mt-1 font-black text-emerald-300">S/ {{ number_format($ticket->total_amount, 2) }}</p></div></div>
+                    <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-5">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Sorteo</p>
+                        <p class="mt-2 text-xl font-black text-slate-100">{{ $ticket->draw?->title ?? 'No disponible' }}</p>
+                        <p class="mt-5 text-xs font-bold uppercase tracking-wider text-slate-500">Fecha del sorteo</p>
+                        <p class="mt-2 font-semibold text-cyan-200">{{ $ticket->draw?->draw_date?->format('d/m/Y') ?? 'Por confirmar' }} {{ $ticket->draw?->draw_time ? '· '.$ticket->draw->draw_time : '' }}</p>
                     </div>
                 </div>
             </section>
