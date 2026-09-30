@@ -39,6 +39,7 @@ Route::prefix('admin')->middleware(['auth', 'permission:ver panel administrativo
     Route::patch('/usuarios/{user}/estado', [UserController::class, 'toggleStatus'])->middleware('permission:gestionar usuarios')->name('users.status.toggle');
     Route::get('/ventas', [SaleController::class, 'index'])->middleware('permission:ver ventas')->name('sales.index');
     Route::put('/ventas/{sale}/estado', [SaleController::class, 'updateStatus'])->middleware('permission:actualizar estados de venta')->name('sales.status.update');
+    Route::get('/tickets/consulta', [TicketController::class, 'lookup'])->name('tickets.lookup');
     Route::get('/tickets/{ticket}/imagen', [TicketShareController::class, 'image'])->middleware('permission:ver ventas')->name('tickets.share-image');
     Route::get('/sorteos/{draw}/talonarios', [TicketPrintController::class, 'index'])->middleware('permission:imprimir talonarios')->name('tickets.print');
     Route::get('/sorteos/{draw}/talonarios/{ticket}', [TicketPrintController::class, 'single'])->middleware('permission:imprimir talonarios')->name('tickets.print.single');

@@ -16,6 +16,7 @@
             <div class="flex items-center gap-5">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3"><img src="{{ asset('brand/icono-tiendasiete.png') }}" alt="Tienda Siete" class="tienda-siete-icon h-10 w-10"><span class="text-sm font-black uppercase tracking-[.12em] text-white">Tienda <span class="text-cyan-300">Siete</span><small class="mt-0.5 block text-[10px] font-bold tracking-widest text-slate-300">PANEL DE SORTEOS</small></span></a>
                 <a href="{{ route('draws.index') }}" class="text-sm font-semibold text-slate-300 hover:text-white">Sorteos</a>
+                <a href="{{ route('tickets.lookup') }}" class="text-sm font-semibold text-slate-300 hover:text-white">Consultar ticket</a>
                 @can('ver ventas')
                     <a href="{{ route('sales.index') }}" class="text-sm font-semibold text-slate-300 hover:text-white">Ventas</a>
                 @endcan

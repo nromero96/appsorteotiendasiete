@@ -12,6 +12,30 @@ use Illuminate\Support\Str;
 
 class TicketController extends Controller
 {
+    public function lookup(Request $request)
+    {
+        $data = $request->validate([
+            'ticket_number' => ['nullable', 'string', 'max:50'],
+        ]);
+
+        $ticketNumber = preg_replace('/\D+/', '', $data['ticket_number'] ?? '');
+        $ticket = null;
+
+        if ($ticketNumber !== '') {
+            $ticket = Ticket::query()
+                ->with(['customer', 'draw', 'prize', 'sale'])
+                ->where('ticket_number', $ticketNumber)
+                ->latest()
+                ->first();
+        }
+
+        return view('tickets.lookup', [
+            'ticket' => $ticket,
+            'ticketNumber' => $ticketNumber,
+            'searched' => $request->filled('ticket_number'),
+        ]);
+    }
+
     public function create(Draw $draw)
     {
         if ($draw->isTicketRegistrationClosed()) {
