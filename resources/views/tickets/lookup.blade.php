@@ -43,7 +43,13 @@
                         <p class="mt-4 text-xs font-bold uppercase tracking-wider text-slate-500">Teléfono / WhatsApp</p>
                         <a href="tel:{{ $ticket->customer?->phone }}" class="mt-2 inline-block text-lg font-bold text-cyan-300 hover:text-cyan-200">{{ $ticket->customer?->phone ?? 'No disponible' }}</a>
                         <p class="mt-4 text-xs font-bold uppercase tracking-wider text-slate-500">DNI</p>
-                        <p class="mt-2 font-mono font-bold text-slate-200">{{ $ticket->customer?->document_number ?? 'No disponible' }}</p>
+                        @php
+                            $documentNumber = $ticket->customer?->document_number;
+                            $maskedDocument = $documentNumber
+                                ? str_repeat('*', max(0, mb_strlen($documentNumber) - 3)).mb_substr($documentNumber, -3)
+                                : 'No disponible';
+                        @endphp
+                        <p class="mt-2 font-mono font-bold text-slate-200">{{ $maskedDocument }}</p>
                     </div>
                     <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-5">
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Sorteo</p>
