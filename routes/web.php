@@ -13,6 +13,7 @@ use App\Http\Controllers\TicketShareController;
 use App\Http\Controllers\TicketPrintController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', PublicDrawController::class)->name('public.next-draw');
 Route::view('/legales/terminos-y-condiciones', 'legal.terms')->name('legal.terms');
