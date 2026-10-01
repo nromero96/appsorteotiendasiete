@@ -26,6 +26,14 @@
                     'rechazado' => 'border-red-400/30 bg-red-400/10 text-red-200',
                     default => 'border-amber-400/30 bg-amber-400/10 text-amber-200',
                 };
+                $phone = $ticket->customer?->phone;
+                $maskedPhone = $phone
+                    ? str_repeat('*', max(0, mb_strlen($phone) - 3)).mb_substr($phone, -3)
+                    : 'No disponible';
+                $documentNumber = $ticket->customer?->document_number;
+                $maskedDocument = $documentNumber
+                    ? str_repeat('*', max(0, mb_strlen($documentNumber) - 3)).mb_substr($documentNumber, -3)
+                    : 'No disponible';
             @endphp
             <section class="mt-6 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-xl shadow-slate-950/20">
                 <header class="flex flex-col gap-4 border-b border-slate-800 bg-slate-900/80 p-6 sm:flex-row sm:items-center sm:justify-between">
@@ -41,14 +49,15 @@
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Participante</p>
                         <p class="mt-2 text-xl font-black text-white">{{ $ticket->customer?->full_name ?? 'No disponible' }}</p>
                         <p class="mt-4 text-xs font-bold uppercase tracking-wider text-slate-500">Teléfono / WhatsApp</p>
-                        <a href="tel:{{ $ticket->customer?->phone }}" class="mt-2 inline-block text-lg font-bold text-cyan-300 hover:text-cyan-200">{{ $ticket->customer?->phone ?? 'No disponible' }}</a>
+                        <div class="mt-2 flex items-center gap-2">
+                            <span data-phone-display class="font-mono text-lg font-bold text-cyan-300">{{ $maskedPhone }}</span>
+                            @if($phone)
+                                <button type="button" data-phone-toggle data-phone="{{ $phone }}" data-masked-phone="{{ $maskedPhone }}" aria-label="Mostrar número completo" aria-pressed="false" title="Mostrar número completo" class="inline-grid h-9 w-9 place-items-center rounded-lg border border-slate-700 text-slate-300 transition hover:border-cyan-400 hover:text-cyan-200">
+                                    <svg aria-hidden="true" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.5-6 9.75-6 9.75 6 9.75 6-3.5 6-9.75 6S2.25 12 2.25 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            @endif
+                        </div>
                         <p class="mt-4 text-xs font-bold uppercase tracking-wider text-slate-500">DNI</p>
-                        @php
-                            $documentNumber = $ticket->customer?->document_number;
-                            $maskedDocument = $documentNumber
-                                ? str_repeat('*', max(0, mb_strlen($documentNumber) - 3)).mb_substr($documentNumber, -3)
-                                : 'No disponible';
-                        @endphp
                         <p class="mt-2 font-mono font-bold text-slate-200">{{ $maskedDocument }}</p>
                     </div>
                     <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-5">
@@ -59,6 +68,18 @@
                     </div>
                 </div>
             </section>
+            <script>
+                document.querySelectorAll('[data-phone-toggle]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const isVisible = button.getAttribute('aria-pressed') === 'true';
+                        const display = button.parentElement.querySelector('[data-phone-display]');
+                        display.textContent = isVisible ? button.dataset.maskedPhone : button.dataset.phone;
+                        button.setAttribute('aria-pressed', String(!isVisible));
+                        button.setAttribute('aria-label', isVisible ? 'Mostrar número completo' : 'Ocultar número completo');
+                        button.setAttribute('title', isVisible ? 'Mostrar número completo' : 'Ocultar número completo');
+                    });
+                });
+            </script>
         @endif
     </section>
 </x-layouts.app>
