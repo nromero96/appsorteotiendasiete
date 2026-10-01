@@ -23,6 +23,22 @@ Route::get('/sorteos/{draw}/participar', [PublicParticipationController::class, 
 Route::post('/sorteos/{draw}/participar', [PublicParticipationController::class, 'store'])->middleware('throttle:10,1')->name('public.participation.store');
 Route::get('/participacion/{sale}/confirmacion', [PublicParticipationController::class, 'confirmation'])->name('public.participation.confirmation');
 
+Route::get('/clear-cache', function () {
+    try {
+        // Limpiar la caché
+        Artisan::call('cache:clear');
+
+        // Limpiar la caché de configuración
+        Artisan::call('config:cache');
+
+        // Mensaje de éxito
+        return 'Cache cleared successfully.';
+    } catch (\Exception $e) {
+        // Manejo de errores
+        return 'Error clearing cache: ' . $e->getMessage();
+    }
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/admin', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/admin', [LoginController::class, 'login']);
